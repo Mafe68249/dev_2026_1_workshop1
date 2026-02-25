@@ -84,7 +84,7 @@ class Conversion:
             decimal_a_binario(10) -> "1010"
             decimal_a_binario(255) -> "11111111"
         """
-        pass
+        return bin(decimal)[2:]
     
     def binario_a_decimal(self, binario):
         """
@@ -100,7 +100,7 @@ class Conversion:
             binario_a_decimal("1010") -> 10
             binario_a_decimal("11111111") -> 255
         """
-        pass
+        return int (binario,2)
     
     def decimal_a_romano(self, numero):
         """
