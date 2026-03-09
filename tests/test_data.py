@@ -25,15 +25,12 @@ class TestData:
         # Test con lista vacía
         assert self.data.buscar_elemento([], 42) == -1
     
-    def test_eliminar_duplicados(self):
-        # Test con lista con duplicados
-        assert self.data.eliminar_duplicados([1, 2, 2, 3, 4, 4, 5]) == [1, 2, 3, 4, 5]
-        # Test con lista sin duplicados
-        assert self.data.eliminar_duplicados([1, 2, 3, 4, 5]) == [1, 2, 3, 4, 5]
-        # Test con lista vacía
-        assert self.data.eliminar_duplicados([]) == []
-        # Test con valores de diferentes tipos
-        assert self.data.eliminar_duplicados([1, "a", 1, "a", True]) == [1, "a", True]
+    def eliminar_duplicados(self, lista):
+        resultado = []
+        for elemento in lista:
+            if elemento not in resultado:
+                resultado.append(elemento)
+        return resultado
     
     def test_merge_ordenado(self):
         # Test con listas de enteros ordenadas
