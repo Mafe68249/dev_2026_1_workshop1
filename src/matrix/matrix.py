@@ -21,7 +21,10 @@ class Matrix:
         Ejemplo:
             suma_matrices([[1, 2], [3, 4]], [[5, 6], [7, 8]]) -> [[6, 8], [10, 12]]
         """
-        pass
+        if len(A) != len(B) or (A and B and len(A[0]) != len(B[0])):
+            raise ValueError("Dimensiones incompatibles")
+
+        return [[A[i][j] + B[i][j] for j in range(len(A[0]))] for i in range(len(A))]
 
     def resta_matrices(self, A, B):
         """
@@ -40,7 +43,10 @@ class Matrix:
         Ejemplo:
             resta_matrices([[5, 6], [7, 8]], [[1, 2], [3, 4]]) -> [[4, 4], [4, 4]]
         """
-        pass
+        if len(A) != len(B) or (A and B and len(A[0]) != len(B[0])):
+            raise ValueError("Dimensiones incompatibles")
+
+        return [[A[i][j] - B[i][j] for j in range(len(A[0]))] for i in range(len(A))]
 
     def multiplicar_matrices(self, A, B):
         """
@@ -60,7 +66,20 @@ class Matrix:
         Ejemplo:
             multiplicar_matrices([[1, 2], [3, 4]], [[5, 6], [7, 8]]) -> [[19, 22], [43, 50]]
         """
-        pass
+        if not A or not B or len(A[0]) != len(B):
+            raise ValueError("Dimensiones incompatibles")
+
+        resultado = []
+        for i in range(len(A)):
+            fila = []
+            for j in range(len(B[0])):
+                suma = 0
+                for k in range(len(B)):
+                    suma += A[i][k] * B[k][j]
+                fila.append(suma)
+            resultado.append(fila)
+
+        return resultado
 
     def multiplicar_escalar(self, matriz, escalar):
         """
@@ -76,7 +95,7 @@ class Matrix:
         Ejemplo:
             multiplicar_escalar([[1, 2], [3, 4]], 3) -> [[3, 6], [9, 12]]
         """
-        pass
+        return [[elemento * escalar for elemento in fila] for fila in matriz]
 
     def transpuesta(self, matriz):
         """
@@ -91,7 +110,9 @@ class Matrix:
         Ejemplo:
             transpuesta([[1, 2, 3], [4, 5, 6]]) -> [[1, 4], [2, 5], [3, 6]]
         """
-        pass
+        if matriz == []:
+            return []
+        return [[matriz[i][j] for i in range(len(matriz))] for j in range(len(matriz[0]))]
 
     def es_cuadrada(self, matriz):
         """
@@ -107,7 +128,9 @@ class Matrix:
             es_cuadrada([[1, 2], [3, 4]]) -> True
             es_cuadrada([[1, 2, 3], [4, 5, 6]]) -> False
         """
-        pass
+        if not matriz:
+            return False
+        return len(matriz) == len(matriz[0])
 
     def es_simetrica(self, matriz):
         """
@@ -124,7 +147,15 @@ class Matrix:
             es_simetrica([[1, 2, 3], [2, 5, 6], [3, 6, 9]]) -> True
             es_simetrica([[1, 2], [3, 4]]) -> False
         """
-        pass
+        if not self.es_cuadrada(matriz):
+            return False
+
+        n = len(matriz)
+        for i in range(n):
+            for j in range(n):
+                if matriz[i][j] != matriz[j][i]:
+                    return False
+        return True
 
     def traza(self, matriz):
         """
@@ -143,7 +174,10 @@ class Matrix:
             traza([[1, 2], [3, 4]]) -> 5
             traza([[1, 0, 0], [0, 5, 0], [0, 0, 9]]) -> 15
         """
-        pass
+        if not self.es_cuadrada(matriz):
+            raise ValueError("La matriz no es cuadrada")
+
+        return sum(matriz[i][i] for i in range(len(matriz)))
 
     def determinante_2x2(self, matriz):
         """
@@ -163,7 +197,12 @@ class Matrix:
             determinante_2x2([[3, 8], [4, 6]]) -> -14
             determinante_2x2([[1, 2], [3, 4]]) -> -2
         """
-        pass
+        if len(matriz) != 2 or len(matriz[0]) != 2:
+            raise ValueError("La matriz no es 2x2")
+
+        a, b = matriz[0]
+        c, d = matriz[1]
+        return a * d - b * c
 
     def determinante_3x3(self, matriz):
         """
@@ -182,7 +221,22 @@ class Matrix:
             determinante_3x3([[1, 2, 3], [4, 5, 6], [7, 8, 9]]) -> 0
             determinante_3x3([[1, 0, 0], [0, 2, 0], [0, 0, 3]]) -> 6
         """
-        pass
+        if len(matriz) != 3 or len(matriz[0]) != 3:
+            raise ValueError("La matriz no es 3x3")
+
+        a, b, c = matriz[0]
+        d, e, f = matriz[1]
+        g, h, i = matriz[2]
+
+        return (
+            a * e * i
+            + b * f * g
+            + c * d * h
+            - c * e * g
+            - b * d * i
+            - a * f * h
+        )
+
 
     def identidad(self, n):
         """
@@ -199,7 +253,7 @@ class Matrix:
             identidad(2) -> [[1, 0], [0, 1]]
             identidad(3) -> [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
         """
-        pass
+        return [[1 if i == j else 0 for j in range(n)] for i in range(n)]
 
     def diagonal(self, matriz):
         """
@@ -218,7 +272,10 @@ class Matrix:
             diagonal([[1, 2, 3], [4, 5, 6], [7, 8, 9]]) -> [1, 5, 9]
             diagonal([[3, 0], [0, 7]]) -> [3, 7]
         """
-        pass
+        if not self.es_cuadrada(matriz):
+            raise ValueError("La matriz no es cuadrada")
+
+        return [matriz[i][i] for i in range(len(matriz))]
 
     def es_diagonal(self, matriz):
         """
@@ -235,7 +292,15 @@ class Matrix:
             es_diagonal([[3, 0], [0, 7]]) -> True
             es_diagonal([[1, 2], [0, 4]]) -> False
         """
-        pass
+        if not self.es_cuadrada(matriz):
+            return False
+
+        n = len(matriz)
+        for i in range(n):
+            for j in range(n):
+                if i != j and matriz[i][j] != 0:
+                    return False
+        return True
 
     def rotar_90(self, matriz):
         """
@@ -251,7 +316,13 @@ class Matrix:
             rotar_90([[1, 2], [3, 4]]) -> [[3, 1], [4, 2]]
             rotar_90([[1, 2, 3], [4, 5, 6], [7, 8, 9]]) -> [[7, 4, 1], [8, 5, 2], [9, 6, 3]]
         """
-        pass
+        if not matriz:
+            return []
+
+        filas = len(matriz)
+        columnas = len(matriz[0])
+
+        return [[matriz[filas - 1 - i][j] for i in range(filas)] for j in range(columnas)]
 
     def buscar_en_matriz(self, matriz, valor):
         """
@@ -269,4 +340,11 @@ class Matrix:
             buscar_en_matriz([[1, 2, 3], [4, 2, 6], [7, 8, 2]], 2) -> [(0, 1), (1, 1), (2, 2)]
             buscar_en_matriz([[1, 2], [3, 4]], 9) -> []
         """
-        pass
+        posiciones = []
+
+        for i in range(len(matriz)):
+            for j in range(len(matriz[i])):
+                if matriz[i][j] == valor:
+                    posiciones.append((i, j))
+
+        return posiciones
