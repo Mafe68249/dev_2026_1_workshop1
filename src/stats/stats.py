@@ -1,3 +1,4 @@
+import math
 class Stats:
     def promedio(self, numeros):
         """
@@ -12,7 +13,9 @@ class Stats:
         Ejemplo:
             promedio([1, 2, 3, 4, 5]) -> 3.0
         """
-        pass
+        if len(numeros) == 0:
+            return 0
+        return sum(numeros) / len(numeros)
     
     def mediana(self, numeros):
         """
@@ -29,7 +32,17 @@ class Stats:
             mediana([1, 2, 3, 4, 5]) -> 3.0
             mediana([1, 2, 3, 4]) -> 2.5
         """
-        pass
+        if len(numeros) == 0:
+            return 0
+
+        nums = sorted(numeros)
+        n = len(nums)
+        mitad = n // 2
+
+        if n % 2 == 0:
+            return (nums[mitad - 1] + nums[mitad]) / 2
+        else:
+            return float(nums[mitad])
     
     def moda(self, numeros):
         """
@@ -45,7 +58,18 @@ class Stats:
         Ejemplo:
             moda([1, 2, 2, 3, 3, 3]) -> 3
         """
-        pass
+        if len(numeros) == 0:
+            return None
+
+        frecuencias = {}
+        for num in numeros:
+            frecuencias[num] = frecuencias.get(num, 0) + 1
+
+        max_freq = max(frecuencias.values())
+
+        for num in numeros:
+            if frecuencias[num] == max_freq:
+                return num
     
     def desviacion_estandar(self, numeros):
         """
@@ -61,7 +85,16 @@ class Stats:
         Ejemplo:
             desviacion_estandar([1, 2, 3, 4, 5]) -> 1.41...
         """
-        pass
+        if len(numeros) == 0:
+            return 0
+        if len(numeros) == 1:
+            return 0.0
+
+        media = self.promedio(numeros)
+        suma = sum((x - media) ** 2 for x in numeros)
+        varianza = suma / len(numeros)
+
+        return math.sqrt(varianza)
     
     def varianza(self, numeros):
         """
@@ -77,7 +110,15 @@ class Stats:
         Ejemplo:
             varianza([1, 2, 3, 4, 5]) -> 2.0
         """
-        pass
+        if len(numeros) == 0:
+            return 0
+        if len(numeros) == 1:
+            return 0.0
+
+        media = self.promedio(numeros)
+        suma = sum((x - media) ** 2 for x in numeros)
+
+        return suma / len(numeros)
     
     def rango(self, numeros):
         """
@@ -92,4 +133,9 @@ class Stats:
         Ejemplo:
             rango([1, 5, 3, 9, 2]) -> 8
         """
-        pass
+        if len(numeros) == 0:
+            return 0
+        if len(numeros) == 1:
+            return 0
+
+        return max(numeros) - min(numeros)
